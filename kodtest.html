@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Bluetooth Example</title>
+</head>
+<body>
+    <h1>Connect to BLE Device</h1>
+    <form id="connectForm">
+        <button type="submit">Get Device Info</button>
+    </form>
+
+    <h2>Write New Values</h2>
+
+    <form id="changeDataForm1">
+        <label for="newUserDataInput1">Userdata 1:</label>
+        <input type="number" id="newUserDataInput1" placeholder="Enter new value for userdata1" required>
+        <button type="submit" id="changeDataButton1">Change userdata1</button>
+    </form>
+
+    <form id="changeDataForm2">
+        <label for="newUserDataInput2">Userdata 2:</label>
+        <input type="number" id="newUserDataInput2" placeholder="Enter new value for userdata2" required>
+        <button type="submit" id="changeDataButton2">Change userdata2</button>
+    </form>
+
+    <form id="changeDataForm3">
+        <label for="newUserDataInput3">Userdata 3:</label>
+        <input type="number" id="newUserDataInput3" placeholder="Enter new value for userdata3" required>
+        <button type="submit" id="changeDataButton3">Change userdata3</button>
+    </form>
+
+    <form id="changeDataForm4">
+        <label for="newUserDataInput4">Userdata 4:</label>
+        <input type="number" id="newUserDataInput4" placeholder="Enter new value for userdata4" required>
+        <button type="submit" id="changeDataButton4">Change userdata4</button>
+    </form>
+
+    <script>
+        const deviceName = 'Arduino';
+        const serviceUUID = '19b10000-e8f2-537e-4f6c-d104768a1211';
+        const characteristicUUID = '19b10000-e8f2-537e-4f6c-d104768a1212';
+        let connectedDevice = null;
+        let characteristic = null;
+
+        function isWebBLEAvailable() {
+            if (!navigator.bluetooth) {
+                console.log('Web Bluetooth is not available!');
+                return false;
+            }
+            return true;
+        }
+
+        function getDeviceInfo() {
+            const options = {
+                filters: [{ name: deviceName }]
+            };
+
+            console.log('Requesting BLE device info...');
+            navigator.bluetooth.requestDevice(options)
+                .then(device => {
+                    console.log('Name: ' + device.name);
+                    connectedDevice = device;
+                    return device.gatt.connect();
+                })
+                .then(server => {
+                    console.log('Connected to GATT server');
+                    return server.getPrimaryService(serviceUUID);
+                })
+                .then(service => {
+                    return service.getCharacteristic(characteristicUUID);
+                })
+                .then(char => {
+                    characteristic = char;
+                    console.log('Characteristic found');
+                })
+                .catch(error => {
+                    console.log('Request device error: ' + error);
+                });
+        }
+
+        function writeValueToDevice(userdata, value) {
+            if (!connectedDevice || !characteristic) {
+                console.error('No device connected or characteristic not found.');
+                return;
+            }
+
+            const data = `${userdata}${value}`;
+            const encoder = new TextEncoder();
+            const encodedValue = encoder.encode(data);
+
+            characteristic.writeValue(encodedValue)
+                .then(() => {
+                    console.log(`${userdata} value written successfully!`);
+                })
+                .catch(error => {
+                    console.error('Error writing value: ' + error);
+                });
+        }
+
+        document.getElementById('connectForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            if (isWebBLEAvailable()) {
+                getDeviceInfo();
+            }
+        });
+
+        document.getElementById('changeDataForm1').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const newValue = document.getElementById('newUserDataInput1').value;
+            if (isWebBLEAvailable()) {
+                writeValueToDevice('userdata1', newValue);
+            }
+        });
+
+        document.getElementById('changeDataForm2').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const newValue = document.getElementById('newUserDataInput2').value;
+            if (isWebBLEAvailable()) {
+                writeValueToDevice('userdata2', newValue);
+            }
+        });
+
+        document.getElementById('changeDataForm3').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const newValue = document.getElementById('newUserDataInput3').value;
+            if (isWebBLEAvailable()) {
+                writeValueToDevice('userdata3', newValue);
+            }
+        });
+
+        document.getElementById('changeDataForm4').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const newValue = document.getElementById('newUserDataInput4').value;
+            if (isWebBLEAvailable()) {
+                writeValueToDevice('userdata4', newValue);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Safe Distance</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="background-image">
+        <img src="image/safe-distance-background.jpg" alt="Safe Distance Background">
+    </div>
+
+    <div class="main">
+        <div class="navbar">
+            <div class="icon">
+                <h2 class="logo">Safe Distance</h2>
+            </div>
+
+            <div class="menu">
+                <ul>
+                    <li><a href="#">HOME</a></li>
+                    <li><a href="conect.html">CONECT</a></li>
+                    <li><a href="#">WARNING TEXT</a></li>
+                    <li><a href="about.html">ABOUT</a></li>
+                    <li><a href="#">CONTACT</a></li>
+                </ul>
+            </div>
+
+            <div class="search">
+                <input class="srch" type="search" name="search" id="search" placeholder="Type To text" autocomplete="off">
+                <a href="#"> <button class="btn">Search</button></a>
+            </div>
+        </div> 
+        <div class="content">
+            <h1>SafeDrive<br><span>Förbättrad</span> <br>Trafiksäkerhet</h1>
+            <p class="par">SafeDrive mäter avstånd till framförvarande bil och varnar vid för kort avstånd. Anpassar <br>
+                varningar efter trafiksituationer för ökad effektivitet Enkel montering och användning med <br> 
+                inbyggd säkerhet. Ger förare trygghet och medvetenhet för säkrare körning.</p>
+
+                
+                <div class="form">
+                    <h2>Login Here</h2>
+                    <input type="email" name="email" id="email" placeholder="Enter Email Here" autocomplete="email">
+                    <input type="password" name="password" id="password" placeholder="Enter Password Here" autocomplete="current-password">
+                    <button class="btnn"><a href="#">Login</a></button>
+
+                    <p class="link">Don't have an account<br>
+                    <a href="#">Sign up </a> here</p>
+                    <p class="liw">Log in with</p>
+
+                    <div class="icons">
+                        <a href="#" class="facebook" title="Login with Facebook"></a>
+                        <a href="#" class="instagram" title="Login with Instagram"></a>
+                        <a href="#" class="twitter" title="Login with Twitter"></a>
+                        <a href="#" class="google" title="Login with Google"></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Optional: Add JavaScript functionality here
+        const socialButtons = document.querySelectorAll('.icons a');
+        socialButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert(`Login with ${this.title}`);
+            });
+        });
+    </script>
+</body>
+</html>
